@@ -24,7 +24,11 @@ namespace Mvc.Client
                 options.LoginPath = "/login";
                 options.LogoutPath = "/signout";
             })
-
+            .AddStrava(options =>
+            {
+                options.ClientId = "4575";
+                options.ClientSecret = "7d04c499f827e46369691c8dff58c724f082a37b";
+            })
             .AddGoogle(options =>
             {
                 options.ClientId = "560027070069-37ldt4kfuohhu3m495hk2j4pjp92d382.apps.googleusercontent.com";
