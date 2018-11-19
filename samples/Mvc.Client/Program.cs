@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore;
+﻿using System.IO;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Hosting.Server;
 
 namespace Mvc.Client
 {
@@ -9,8 +11,9 @@ namespace Mvc.Client
             BuildWebHost(args).Run();
 
         public static IWebHost BuildWebHost(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
-                .Build();
+        WebHost.CreateDefaultBuilder(args)
+            .UseUrls("http://localhost:5100")
+            .UseStartup<Startup>()
+            .Build();
     }
 }
