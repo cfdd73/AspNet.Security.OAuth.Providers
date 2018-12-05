@@ -35,7 +35,7 @@ namespace AspNet.Security.OAuth.Strava
         protected override async Task<AuthenticationTicket> CreateTicketAsync([NotNull] ClaimsIdentity identity,
             [NotNull] AuthenticationProperties properties, [NotNull] OAuthTokenResponse tokens)
         {
-            System.Console.WriteLine($"AccessToken={tokens.AccessToken}");
+            // System.Console.WriteLine($"AccessToken={tokens.AccessToken}");
             var request = new HttpRequestMessage(HttpMethod.Get, Options.UserInformationEndpoint);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.AccessToken);
@@ -54,14 +54,14 @@ namespace AspNet.Security.OAuth.Strava
 
             var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
 
+            // https://stackoverflow.com/questions/52105702/asp-net-core-2-1-how-to-access-action-claims-in-the-controller-code-especial
+            // https://csharp.hotexamples.com/examples/-/AuthenticationTicket/-/php-authenticationticket-class-examples.html
             identity.AddClaim(new Claim("token",tokens.AccessToken));
             var principal = new ClaimsPrincipal(identity);
-
             var context = new OAuthCreatingTicketContext(principal, properties, Context, Scheme, Options, Backchannel, tokens, payload);
             context.RunClaimActions(payload);
 
             await Options.Events.CreatingTicket(context);
-
             return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
         }
 
